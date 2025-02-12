@@ -23,23 +23,23 @@ services:
       - stack.env # default was `.env`, stack.env for portainer
     ports:
       - '2283:2283'
-    networks:
-      - proxy
-      - immich
+    # networks:
+    #   - proxy
+    #   - immich
     depends_on:
       - redis
       - database
     restart: always
     healthcheck:
       disable: false
-    labels:
-      traefik.enable: true
-      # increase readingTimeouts for the entrypoint used here
-      traefik.http.routers.immich.entrypoints: websecure
-      traefik.http.routers.immich.rule: Host(`immich.${DOMAIN}`)
-      traefik.http.services.immich.loadbalancer.server.port: 2283
-      traefik.http.routers.immich.service: immich
-      traefik.http.router.immich.tls.certresolver: ${CERT_RESOLVER}
+    # labels:
+    #   traefik.enable: true
+    #   # increase readingTimeouts for the entrypoint used here
+    #   traefik.http.routers.immich.entrypoints: websecure
+    #   traefik.http.routers.immich.rule: Host(`immich.${DOMAIN}`)
+    #   traefik.http.services.immich.loadbalancer.server.port: 2283
+    #   traefik.http.routers.immich.service: immich
+    #   traefik.http.router.immich.tls.certresolver: ${CERT_RESOLVER}
 
   immich-machine-learning:
     container_name: immich_machine_learning
@@ -51,9 +51,9 @@ services:
     #   service: cpu # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the `-wsl` version for WSL2 where applicable
     volumes:
       - model-cache:/cache
-    networks:
-      - immich
-      - proxy
+    # networks:
+    #   - immich
+    #   - proxy
     env_file:
       - stack.env
     restart: always
@@ -80,8 +80,8 @@ services:
     volumes:
       # Do not edit the next line. If you want to change the database storage location on your system, edit the value of DB_DATA_LOCATION in the .env file
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
-    networks:
-      - immich
+    # networks:
+    #   - immich
     healthcheck:
       test: >-
         pg_isready --dbname="$${POSTGRES_DB}" --username="$${POSTGRES_USER}" || exit 1;
@@ -104,8 +104,8 @@ services:
 
 volumes:
   model-cache:
-networks:
-  proxy:
-    external: true
-  immich:
-    internal: true
+# networks:
+#   proxy:
+#     external: true
+#   immich:
+#     internal: true
