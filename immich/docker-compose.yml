@@ -25,6 +25,7 @@ services:
       - '2283:2283'
     networks:
       - proxy
+      - immich
     depends_on:
       - redis
       - database
@@ -50,6 +51,8 @@ services:
     #   service: cpu # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the `-wsl` version for WSL2 where applicable
     volumes:
       - model-cache:/cache
+    networks:
+      - immich
     env_file:
       - stack.env
     restart: always
@@ -59,6 +62,8 @@ services:
   redis:
     container_name: immich_redis
     image: docker.io/redis:6.2-alpine@sha256:905c4ee67b8e0aa955331960d2aa745781e6bd89afc44a8584bfd13bc890f0ae
+    networks:
+      - immich
     healthcheck:
       test: redis-cli ping || exit 1
     restart: always
@@ -74,6 +79,8 @@ services:
     volumes:
       # Do not edit the next line. If you want to change the database storage location on your system, edit the value of DB_DATA_LOCATION in the .env file
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
+    networks:
+      - immich
     healthcheck:
       test: >-
         pg_isready --dbname="$${POSTGRES_DB}" --username="$${POSTGRES_USER}" || exit 1;
@@ -99,3 +106,4 @@ volumes:
 networks:
   proxy:
     external: true
+  immich:
