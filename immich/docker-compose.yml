@@ -23,12 +23,22 @@ services:
       - stack.env # default was `.env`, stack.env for portainer
     ports:
       - '2283:2283'
+    networks:
+      - proxy
     depends_on:
       - redis
       - database
     restart: always
     healthcheck:
       disable: false
+    labels:
+      traefik.enable: true
+      # increase readingTimeouts for the entrypoint used here
+      traefik.http.routers.immich.entrypoints: websecure
+      traefik.http.routers.immich.rule: Host(`immich.${DOMAIN}`)
+      traefik.http.services.immich.loadbalancer.server.port: 2283
+      traefik.http.routers.immich.service: immich
+      traefik.http.router.immich.tls.certresolver=${CERT_RESOLVER}
 
   immich-machine-learning:
     container_name: immich_machine_learning
@@ -86,3 +96,6 @@ services:
 
 volumes:
   model-cache:
+networks:
+  proxy:
+    external: true
