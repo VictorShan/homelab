@@ -40,6 +40,7 @@ services:
       traefik.http.services.immich.loadbalancer.server.port: 2283
       traefik.http.routers.immich.service: immich
       traefik.http.routers.immich.tls.certresolver: ${CERT_RESOLVER}
+      traefik.docker.network: proxy
 
   immich-machine-learning:
     container_name: immich_machine_learning
