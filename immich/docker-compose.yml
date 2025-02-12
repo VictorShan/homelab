@@ -53,6 +53,7 @@ services:
       - model-cache:/cache
     networks:
       - immich
+      - proxy
     env_file:
       - stack.env
     restart: always
@@ -107,3 +108,4 @@ networks:
   proxy:
     external: true
   immich:
+    internal: true
