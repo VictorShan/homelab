@@ -7,8 +7,10 @@ services:
       - COUCHDB_USER=${USERNAME}
       - COUCHDB_PASSWORD=${PASSWORD}
     volumes:
-      - ./data:/opt/couchdb/data
-      - /home/victor/obsidian-livesync/local.ini:/opt/couchdb/etc/local.ini
+      # WORKSPACE is a directory that contains your obsidian-livesync directory
+      # create the structure as shown below
+      - ${WORKSPACE}/obsidian-livesync/data:/opt/couchdb/data
+      - ${WORKSPACE}/obsidian-livesync/local.ini:/opt/couchdb/etc/local.ini
     # Ports not needed when already passed to Traefik
     #ports:
     #  - 5984:5984
